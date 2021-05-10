@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -u
+set -x
+
 # Raspberry Pi 3
 
 # Keyboard Setup
@@ -23,6 +26,17 @@ drop_motd_() {
     for f in 85-fwupd 90-updates-available 91-release-upgrade 92-unattended-upgrades 95-hwe-eol; do
         sudo chmod -v -x /etc/update-motd.d/$f
     done
+}
+
+# https://developer.android.com/studio#command-tools
+
+fetch_android_tools() {
+    pushd ~/Downloads
+    if [ "$?" -eq "0" ]; then
+        wget https://dl.google.com/android/repository/commandlinetools-linux-7302050_latest.zip
+        sudo unzip -d /opt commandlinetools-linux-7302050_latest.zip
+        popd
+    fi
 }
 
 main_() {
