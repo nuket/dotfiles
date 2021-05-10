@@ -10,6 +10,21 @@
 
 # All Systems
 
+update_secureboot_policy_() {
+    sudo fuser -v -k /var/cache/debconf/config.dat
+    sudo /usr/bin/perl -w /usr/share/debconf/frontend /usr/sbin/update-secureboot-policy --enroll-key
+}
+
+reboot_to_uefi_() {
+    systemctl reboot --firmware-setup
+}
+
+drop_motd_() {
+    for f in 85-fwupd 90-updates-available 91-release-upgrade 92-unattended-upgrades 95-hwe-eol; do
+        sudo chmod -v -x /etc/update-motd.d/$f
+    done
+}
+
 main_() {
     # Disable Unattended Upgrades
     sudo dpkg-reconfigure unattended-upgrades
